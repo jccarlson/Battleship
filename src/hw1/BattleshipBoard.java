@@ -24,6 +24,8 @@ public class BattleshipBoard {
 	private int n;
 	/** The number of ships which will be on the board */
 	private int numShips;
+	/** number of shots which have been fired at the board */
+	private int numShots;
 	/** linked list of {@link Ship} objects which are on the board */
 	private LinkedList<Ship> fleet;
 	/** Matrix of characters which describe the current state of the board */
@@ -48,6 +50,7 @@ public class BattleshipBoard {
 	public BattleshipBoard(int n, int numShips) {
 		this.n = n;
 		this.numShips = numShips;
+		this.numShots = 0;
 		fleet = new LinkedList<Ship>();
 		status = new char[n][n];
 		locked = false;
@@ -256,7 +259,7 @@ public class BattleshipBoard {
 	}
 
 	/**
-	 * Fires a shot, if valid, at (row, column).
+	 * Fires a shot, if valid, at (row, column), and updates the shot counter.
 	 * <p>
 	 * Valid shots are those within the boundaries of the board, where a shot
 	 * hasn't been fired previously.
@@ -280,6 +283,8 @@ public class BattleshipBoard {
 			return false;
 		if (status[row][column] != ' ')
 			return false;
+		
+		numShots++;
 
 		// is it a hit?
 		ListIterator<Ship> l = fleet.listIterator();
@@ -340,7 +345,24 @@ public class BattleshipBoard {
 
 		return sunkStatus;
 	}
-
+	
+	/**
+	 * returns the number of (valid) shots fired at the board.
+	 * @return the number of (valid) shots fired at the board.
+	 * @see #fireShot(int, int)
+	 */
+	public int getNumShots() {
+		return numShots;
+	}
+	
+	/**
+	 * returns the square dimension of the board.
+	 * @return n - the size of the board in units.
+	 */
+	public int getSize() {
+		return n;
+	}
+		
 	/**
 	 * Determines if this board has lost the game (all ships are sunk).
 	 * 
