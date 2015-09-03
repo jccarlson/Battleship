@@ -7,8 +7,8 @@ package boardAPI;
  * Contains fields and methods which describe the name, size, position,
  * orientation, and hit status of a particular ship.
  * 
- * @author Jason Carlson <jcarlson08 @ gmail.com>
- * @version 1.0
+ * @author Jason Carlson <jccarlson@miners.utep.edu>
+ * @version 1.2
  * @since 2015-08-30
  */
 

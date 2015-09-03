@@ -12,8 +12,8 @@ import java.util.ListIterator;
  * board, as well as fire shots at various locations, and retrieve the current
  * status of the board and its ships.
  * 
- * @author Jason Carlson <jcarlson08 @ gmail.com>
- * @version 1.0
+ * @author Jason Carlson <jccarlson@miners.utep.edu>
+ * @version 1.2
  * @since 2015-08-30
  */
 public class BattleshipBoard {
@@ -283,7 +283,7 @@ public class BattleshipBoard {
 			return false;
 		if (status[row][column] != ' ')
 			return false;
-		
+
 		numShots++;
 
 		// is it a hit?
@@ -345,24 +345,26 @@ public class BattleshipBoard {
 
 		return sunkStatus;
 	}
-	
+
 	/**
 	 * returns the number of (valid) shots fired at the board.
+	 * 
 	 * @return the number of (valid) shots fired at the board.
 	 * @see #fireShot(int, int)
 	 */
 	public int getNumShots() {
 		return numShots;
 	}
-	
+
 	/**
 	 * returns the square dimension of the board.
+	 * 
 	 * @return n - the size of the board in units.
 	 */
 	public int getSize() {
 		return n;
 	}
-		
+
 	/**
 	 * Determines if this board has lost the game (all ships are sunk).
 	 * 
