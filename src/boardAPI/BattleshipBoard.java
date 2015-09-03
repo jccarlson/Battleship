@@ -1,4 +1,4 @@
-package hw1;
+package boardAPI;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -90,12 +90,12 @@ public class BattleshipBoard {
 		if (newShip.isVertical()) {
 			if (c < 0 || c >= n)
 				return false;
-			if (r < 0 || (r + s) >= n)
+			if (r < 0 || (r + s - 1) >= n)
 				return false;
 		} else {
 			if (r < 0 || r >= n)
 				return false;
-			if (c < 0 || (c + s) >= n)
+			if (c < 0 || (c + s - 1) >= n)
 				return false;
 		}
 

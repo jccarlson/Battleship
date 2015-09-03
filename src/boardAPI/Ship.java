@@ -1,4 +1,4 @@
-package hw1;
+package boardAPI;
 
 /**
  * Describes an instance of a ship in a game of Battleship.

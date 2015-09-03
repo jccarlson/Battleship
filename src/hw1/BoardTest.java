@@ -2,6 +2,11 @@ package hw1;
 
 import java.util.*;
 
+import boardAPI.BattleshipBoard;
+import boardAPI.Ship;
+
+import sound.WavPlayer;
+
 public class BoardTest {
 	
 	static void displayBoard(BattleshipBoard dBoard) {
@@ -61,7 +66,7 @@ public class BoardTest {
 		
 		int n = 0;
 		int numShips = 5;
-		
+		WavPlayer player = new WavPlayer();
 		// Get input to build the board 
 		
 		Scanner cin = new Scanner(System.in);
@@ -230,11 +235,10 @@ public class BoardTest {
                                                   
                     try {    
                         r  = cin.nextInt();
-                        if(r >= 1) v = true;
-                        else System.out.print("Please input an integer value >= 1: ");
+                        v = true;
                     } 
                     catch(InputMismatchException e) {
-                      System.out.print("Caught: InputMismatchException -- Please input an integer value >= 1. ");
+                      System.out.print("Caught: InputMismatchException -- Please input an integer value. ");
                       cin.next();
                     }
                 }
@@ -244,11 +248,10 @@ public class BoardTest {
                                                   
                     try {    
                         c  = cin.nextInt();
-                        if(c >= 1) v = true;
-                        else System.out.println("Please input an integer value >= 1: ");
+                        v = true;
                     } 
                     catch(InputMismatchException e) {
-                      System.out.println("Caught: InputMismatchException -- Please input an integer value >= 1: ");
+                      System.out.println("Caught: InputMismatchException -- Please input an integer value. ");
                       cin.next();
                     }
                 }
@@ -260,14 +263,22 @@ public class BoardTest {
                 if(testBoard.fireShot(r, c)) {
                 	System.out.print("Valid shot! It's a ");
                 	if(testBoard.checkStatus(r, c) == 'H') {
+                		
+                		boolean playHit = true;
                 		System.out.println("HIT!");
+                		
                 		boolean [] newIsSunk = testBoard.getShipSunkStatus();
                 		for(int i = 0; i < isSunk.length; i++) {
                 			if(isSunk[i] != newIsSunk[i]){
                 				System.out.println("You sunk the " + testBoard.getShipNames()[i] + "!!!");
+                				playHit = false;
                 			}
                 		}
                 		isSunk = newIsSunk;
+                		
+                		//play sounds
+                		 if(playHit) player.playClip("/ship_hit.wav");
+                		 else player.playClip("/ship_sunk.wav");
                 	}
                 	else {
                 		System.out.println("MISS.");
@@ -276,6 +287,8 @@ public class BoardTest {
                 else System.out.println("Invalid shot: You have already shot there or it is out of bounds. Try again!");
         	}
         	
+        	System.out.println();
+        	displayBoard(testBoard);
         	System.out.println();
         	System.out.println("All ships sunk! Total shots fired: " + testBoard.getNumShots() + ".");
         	System.out.println("Game terminated.");
