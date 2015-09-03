@@ -42,8 +42,8 @@ public class BoardTest {
 		System.out.println("Number of Shots: " + dBoard.getNumShots());
 		
 		System.out.println();
-		System.out.printf("%1$15s \u2502 Sunk\n", "Ship Name");
-		for(int i = 0; i < 16; i++) {	
+		System.out.printf("%1$17s \u2502 Sunk\n", "Ship Name");
+		for(int i = 0; i < 18; i++) {	
 			System.out.printf("\u2500");
 		}
 		System.out.printf("\u253C\u2500\u2500\u2500\u2500\u2500\u2500\n");
@@ -52,7 +52,7 @@ public class BoardTest {
 		boolean [] isSunk = dBoard.getShipSunkStatus();
 		
 		for(int i = 0; i < names.length; i++) {
-			System.out.printf("%1$15s \u2502 %2$b \n", names[i], isSunk[i]);
+			System.out.printf("%1$17s \u2502 %2$b \n", names[i], isSunk[i]);
 		}		
 	}
 	
