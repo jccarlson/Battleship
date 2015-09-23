@@ -80,7 +80,8 @@ public class BoardTest {
 
 		int n = 0;
 		int numShips = 5;
-		WavPlayer player = new WavPlayer();
+		WavPlayer hitPlayer = new WavPlayer("/ship_hit.wav");
+		WavPlayer sunkPlayer = new WavPlayer("/ship_sunk.wav");
 		// Get input to build the board
 
 		Scanner cin = new Scanner(System.in);
@@ -291,9 +292,9 @@ public class BoardTest {
 
 						// play sounds
 						if (playHit)
-							player.playClip("/ship_hit.wav");
+							hitPlayer.playClip();
 						else
-							player.playClip("/ship_sunk.wav");
+							sunkPlayer.playClip();
 					} else {
 						System.out.println("MISS.");
 					}
