@@ -3,8 +3,6 @@ package boardGUI;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import boardAPI.BattleshipBoard;
-
 /**
  * Describes a square on a {@link BoardPanel}. 
  * 
@@ -24,8 +22,6 @@ public class BoardSquare {
 	/** Passed from parent Component, this is the actual x,y pixel location on that component of the top left pixel, used for painting */
 	private int paintX, paintY;
 	
-	/** The BattleshipBoard that controls the status of this BoardSquare */
-	BattleshipBoard logicalBoard;
 	
 	/** The logical row and column coordinates of this BoardSquare on the logicalBoard */
 	public final int ROW, COL;
@@ -42,8 +38,7 @@ public class BoardSquare {
 	 * @param pY the y pixel location of the top left square of this BoardSquare
 	 * @param cs a ColorScheme describing the colors of this square. 
 	 */
-	public BoardSquare(BattleshipBoard l, int r, int c, int s, int pX, int pY, ColorScheme cs) {
-		logicalBoard = l;
+	public BoardSquare(int r, int c, int s, int pX, int pY, ColorScheme cs) {
 		ROW = r;
 		COL = c;
 		size = s;
@@ -59,14 +54,12 @@ public class BoardSquare {
 		paintY = pY;
 	}
 	
-	public char update() {
-		char status = logicalBoard.checkStatus(ROW, COL);
+	public void click(char s) {
 		currentColor = sqColors.DEFAULT;
-		if(status == 'M')
+		if(s == 'M')
 			currentColor = sqColors.MISS;
-		if(status == 'H')
+		if(s == 'H')
 			currentColor = sqColors.HIT;
-		return status;
 	}
 	
 	/** 
@@ -81,16 +74,5 @@ public class BoardSquare {
 		g.drawRect(paintX, paintY, size, size);
 	}
 	
-	/**
-	 * Call when the square is clicked on
-	 * 
-	 * @return status of the square after a click
-	 */
-	public char click() {
-		if(logicalBoard.fireShot(ROW, COL)) {
-			char status = update();
-			return status;
-		}
-		return ' ';
-	}	
+		
 }

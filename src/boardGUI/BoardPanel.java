@@ -4,38 +4,37 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
-import boardAPI.BattleshipBoard;
+import boardAPI.battleshipInterface.BattleshipEvent;
+import boardAPI.battleshipInterface.BattleshipListener;
 
 @SuppressWarnings("serial")
-public class BoardPanel extends JPanel {
+public class BoardPanel extends JPanel implements BattleshipListener{
 
-	private BattleshipBoard logicalBoard;
 	private int scale;
 	private int gridSize;
 	ColorScheme boardColors;
 	
 	BoardSquare [][] squares;
 	
-	public BoardPanel(BattleshipBoard l, int s, ColorScheme cs) {
+	public BoardPanel(int gs, int s, ColorScheme cs) {
 		super();
-		logicalBoard = l;
 		scale = s;
-		gridSize = logicalBoard.getSize();
+		gridSize = gs;
 		setPreferredSize(new Dimension(gridSize * scale, gridSize * scale));
 		squares = new BoardSquare[gridSize][gridSize];
 		boardColors = cs;
 		for(int i=0; i < gridSize; i++) {
 			for(int j=0; j < gridSize; j++) {
-				squares[i][j] = new BoardSquare(logicalBoard, i, j, scale, j * scale, i * scale, boardColors);
+				squares[i][j] = new BoardSquare(i, j, scale, j * scale, i * scale, boardColors);
 			}
 		}
 	}
 	
-	public void refresh() {
+	public void reset() {
 		
 		for(int i=0; i < gridSize; i++) {
 			for(int j=0; j < gridSize; j++) {
-				squares[i][j].update();
+				squares[i][j].click(' ');
 			}
 		}
 		//repaint();
@@ -51,26 +50,35 @@ public class BoardPanel extends JPanel {
 		}
 	}
 
-	public void resetLogicalBoard(BattleshipBoard logicalBoard2) {
-		
-		logicalBoard = logicalBoard2;
-		gridSize = logicalBoard.getSize();
-		setPreferredSize(new Dimension(gridSize * scale, gridSize * scale));
-		squares = new BoardSquare[gridSize][gridSize];
-		
-		for(int i=0; i < gridSize; i++) {
-			for(int j=0; j < gridSize; j++) {
-				squares[i][j] = new BoardSquare(logicalBoard, i, j, scale, j * scale, i * scale, boardColors);
-			}
-		}
-		
-	}
-	
-	public char clickAt(int x, int y) {
+	public BoardSquare clickAt(int x, int y) {
 		int row = y / scale;
 		int col = x / scale;
-		if(row >= gridSize || col >= gridSize) return ' ';
-		return squares[row][col].click();
+		
+		if(row < gridSize || col < gridSize)
+			return squares[row][col];
+		return null;	
+	}
+
+	@Override
+	public void shotFired(BattleshipEvent e) {
+		char s = ' ';
+		if((e.getEvent() & BattleshipEvent.HIT) == BattleshipEvent.HIT)
+			s = 'H';
+		if((e.getEvent() & BattleshipEvent.MISS) == BattleshipEvent.MISS)
+			s = 'M';
+		squares[e.getRow()][e.getCol()].click(s);
+		
+	}
+
+	@Override
+	public void gameOver(BattleshipEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void shipMoved(BattleshipEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 }

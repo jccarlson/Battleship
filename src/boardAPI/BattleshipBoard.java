@@ -3,6 +3,9 @@ package boardAPI;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+import boardAPI.battleshipInterface.BattleshipEvent;
+import boardAPI.battleshipInterface.BattleshipListener;
+
 /**
  * Describes an instance of an {@code n*n} grid square board on which one can
  * play a game of Battleship.
@@ -35,6 +38,10 @@ public class BattleshipBoard {
 	 * fired
 	 */
 	private boolean locked;
+	
+	//Listeners
+	
+	private LinkedList <BattleshipListener> listeners;
 
 	// Constructor
 
@@ -275,28 +282,47 @@ public class BattleshipBoard {
 	public boolean fireShot(int row, int column) {
 
 		// valid shot?
-		if (!locked)
+		if (!locked) {
+			sendShotFiredMessage(new BattleshipEvent(BattleshipEvent.INVALID, row, column));
 			return false;
-		if (row < 0 || row >= n)
+		}
+		if (row < 0 || row >= n) {
+			sendShotFiredMessage(new BattleshipEvent(BattleshipEvent.INVALID, row, column));
 			return false;
-		if (column < 0 || column >= n)
+		}
+		if (column < 0 || column >= n) {
+			sendShotFiredMessage(new BattleshipEvent(BattleshipEvent.INVALID, row, column));
 			return false;
-		if (status[row][column] != ' ')
+		}
+		if (status[row][column] != ' ') {
+			sendShotFiredMessage(new BattleshipEvent(BattleshipEvent.INVALID, row, column));
 			return false;
-
+		}
+		
 		numShots++;
 
 		// is it a hit?
 		ListIterator<Ship> l = fleet.listIterator();
 		while (l.hasNext()) {
-			if (l.next().tryShot(row, column)) {
+			Ship next = l.next();
+			if (next.tryShot(row, column)) {
 				status[row][column] = 'H';
+				if(next.isSunk()) {
+					sendShotFiredMessage(new BattleshipEvent(BattleshipEvent.HIT | BattleshipEvent.SHIP_SUNK, row, column, next));
+					if(gameLost()) {
+						sendGameOverMessage(new BattleshipEvent(BattleshipEvent.GAME_OVER));					
+					}
+				}
+				else {
+					sendShotFiredMessage(new BattleshipEvent(BattleshipEvent.HIT, row, column));
+				}
 				return true;
 			}
 		}
 
 		// it was a miss.
 		status[row][column] = 'M';
+		sendShotFiredMessage(new BattleshipEvent(BattleshipEvent.MISS, row, column));
 		return true;
 	}
 
@@ -378,4 +404,31 @@ public class BattleshipBoard {
 		}
 		return true;
 	}
+	
+	public void addBattleshipListener(BattleshipListener l) {
+		listeners.add(l);
+	}
+	
+	public void removeBattleshipListener(BattleshipListener l) {
+		listeners.remove(l);
+	}
+	
+	public void sendShotFiredMessage(BattleshipEvent e) {
+		for(BattleshipListener l: listeners) {
+			l.shotFired(e);
+		}
+	}
+	
+	public void sendGameOverMessage(BattleshipEvent e) {
+		for(BattleshipListener l: listeners) {
+			l.gameOver(e);
+		}
+	}
+	
+	public void sendShipMovedMessage(BattleshipEvent e) {
+		for(BattleshipListener l: listeners) {
+			l.shipMoved(e);
+		}
+	}
+	
 }

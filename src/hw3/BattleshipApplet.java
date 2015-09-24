@@ -16,14 +16,17 @@ import javax.swing.JPanel;
 
 import boardAPI.BattleshipBoard;
 import boardAPI.Ship;
+import boardAPI.battleshipInterface.BattleshipEvent;
+import boardAPI.battleshipInterface.BattleshipListener;
 import boardGUI.BoardPanel;
+import boardGUI.BoardSquare;
 import boardGUI.ColorScheme;
 import boardGUI.StatusPanel;
 import sound.WavPlayer;
 
 
 @SuppressWarnings("serial")
-public class BattleshipApplet extends JApplet implements MouseListener{
+public class BattleshipApplet extends JApplet implements MouseListener, BattleshipListener{
 	
 
 	private final WavPlayer hitPlay = new WavPlayer("/ship_hit.wav");
@@ -32,8 +35,6 @@ public class BattleshipApplet extends JApplet implements MouseListener{
 	private BoardPanel guiBoard;
 	private StatusPanel sPanel;
 	
-	boolean [] isSunk;
-	
 	
 	/** To start a new game. */
 	private final JButton playButton = new JButton("RESET");
@@ -41,15 +42,23 @@ public class BattleshipApplet extends JApplet implements MouseListener{
 	/** Message bar to display the number of shots and the outcome. */
 	private final JLabel msgBar = new JLabel("");
 	
+	private boolean isGameOver;
+	
 	public BattleshipApplet() {
 		super();
 		logicalBoard = new BattleshipBoard(10, 5);
 		placeShips();
 		logicalBoard.lockBoard();
-		guiBoard = new BoardPanel(logicalBoard, 20, new ColorScheme(new Color(50, 50, 255), Color.RED, Color.WHITE, Color.BLACK));
-		sPanel = new StatusPanel(logicalBoard);
+		guiBoard = new BoardPanel(logicalBoard.getSize(), 20, new ColorScheme(new Color(50, 50, 255), Color.RED, Color.WHITE, Color.BLACK));
+		sPanel = new StatusPanel(logicalBoard.getShipNames());
 		playButton.addActionListener(this::resetButtonClicked);
-		isSunk = logicalBoard.getShipSunkStatus();
+		isGameOver = false;
+		
+
+		logicalBoard.addBattleshipListener(guiBoard);
+		logicalBoard.addBattleshipListener(sPanel);
+		logicalBoard.addBattleshipListener(this);
+		
 		
 	}
 	
@@ -86,12 +95,16 @@ public class BattleshipApplet extends JApplet implements MouseListener{
 		placeShips();
 		logicalBoard.lockBoard();
 		
-		guiBoard.resetLogicalBoard(logicalBoard);
+		guiBoard.reset();
 				
-		sPanel.resetLogicalBoard(logicalBoard);
+		sPanel.reset();
 		
-		isSunk = logicalBoard.getShipSunkStatus();
-				
+		isGameOver = false;
+		
+		logicalBoard.addBattleshipListener(guiBoard);
+		logicalBoard.addBattleshipListener(sPanel);
+		logicalBoard.addBattleshipListener(this);
+						
 		displayMessage("");
 				
 		repaint();
@@ -125,38 +138,11 @@ public class BattleshipApplet extends JApplet implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getButton() == MouseEvent.BUTTON1 && !logicalBoard.gameLost()) {
-			char status = guiBoard.clickAt(e.getX(), e.getY());
-			if(status == 'H') {
-				String dispMsg = "SHOT FIRED! IT'S A HIT!!! ";
-				boolean playHit = true;
-				boolean[] newIsSunk = logicalBoard.getShipSunkStatus();
-				for (int i = 0; i < isSunk.length; i++) {
-					if (isSunk[i] != newIsSunk[i]) {
-						dispMsg += "You sunk the " + logicalBoard.getShipNames()[i] + "!!! ";
-						playHit = false;
-					}
-				}
-				if(logicalBoard.gameLost()) {
-					dispMsg += "GAME OVER.";
-				}
-				isSunk = newIsSunk;
-
-				displayMessage(dispMsg);
-				// play sounds
-				if (playHit) {
-					new Thread(hitPlay).start();
-				}
-				else
-					new Thread(sinkPlay).start();
-				
-			}
-			if(status == 'M') displayMessage("SHOT FIRED! MISS!");
-			if(status == ' ') displayMessage("Can't shoot there...");
-			
+		if(e.getButton() == MouseEvent.BUTTON1 && !isGameOver) {
+			BoardSquare s = guiBoard.clickAt(e.getX(), e.getY());
+			logicalBoard.fireShot(s.ROW, s.COL);
 		}
-		sPanel.refresh();
-		guiBoard.refresh();
+			
 		repaint();
 	}
 
@@ -180,6 +166,56 @@ public class BattleshipApplet extends JApplet implements MouseListener{
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void shotFired(BattleshipEvent e) {
+		
+		
+		char status = ' ';
+		
+		if ((e.getEvent() & BattleshipEvent.HIT) == BattleshipEvent.HIT)
+			status = 'H';
+
+		if ((e.getEvent() & BattleshipEvent.MISS) == BattleshipEvent.MISS)
+			status = 'M';
+		
+		if ((e.getEvent() & BattleshipEvent.INVALID) == BattleshipEvent.INVALID)
+			status = ' ';
+		
+					
+		if(status == 'H') {
+			String dispMsg = "SHOT FIRED! IT'S A HIT!!! ";
+			boolean playHit = true;
+			if ((e.getEvent() & BattleshipEvent.SHIP_SUNK) == BattleshipEvent.SHIP_SUNK) {
+				dispMsg += "You sunk the " + e.getShip().getName() + "!!! ";
+				playHit = false;
+			}
+			displayMessage(dispMsg);
+			
+			// play sounds
+			if (playHit) {
+				new Thread(hitPlay).start();
+			}
+			else
+				new Thread(sinkPlay).start();
+			
+		}
+		if(status == 'M') displayMessage("SHOT FIRED! MISS!");
+		if(status == ' ') displayMessage("Can't shoot there...");
+		
+	}
+
+	@Override
+	public void gameOver(BattleshipEvent e) {
+		isGameOver = true;
+		displayMessage("GAME OVER.");		
+	}
+
+	@Override
+	public void shipMoved(BattleshipEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
