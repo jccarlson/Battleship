@@ -21,8 +21,9 @@ public class StatusPanel extends JPanel implements BattleshipListener{
 	boolean [] isSunk;
 	int shots;
 	
-	public StatusPanel(String [] names) {
+	public StatusPanel(String [] n) {
 		super();
+		names = n;
 		shipStatus = new JLabel[names.length];
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		

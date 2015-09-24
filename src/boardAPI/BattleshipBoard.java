@@ -41,6 +41,7 @@ public class BattleshipBoard {
 	
 	//Listeners
 	
+	/** All the BattleshipListeners of this board */
 	private LinkedList <BattleshipListener> listeners;
 
 	// Constructor
@@ -66,6 +67,8 @@ public class BattleshipBoard {
 				status[i][j] = ' ';
 			}
 		}
+		
+		listeners = new LinkedList<BattleshipListener>();
 	}
 
 	// methods
@@ -272,6 +275,8 @@ public class BattleshipBoard {
 	 * hasn't been fired previously.
 	 * <p>
 	 * To check if the shot hit or missed, use {@link #checkStatus(int, int)}.
+	 * <p>
+	 * Sends shotFired() and possibly gameOver() messages to listeners 
 	 * 
 	 * @param row
 	 *            The row of the space to shoot at.
@@ -405,26 +410,54 @@ public class BattleshipBoard {
 		return true;
 	}
 	
+	/**
+	 * Adds a new listener.
+	 * 
+	 * @param l a new {@link BattleshipListener}
+	 */
 	public void addBattleshipListener(BattleshipListener l) {
 		listeners.add(l);
 	}
 	
+	/**
+	 * Removes a listener.
+	 * 
+	 * @param l a {@link BattleshipListener} that has been previously added.
+	 */
 	public void removeBattleshipListener(BattleshipListener l) {
 		listeners.remove(l);
 	}
 	
+	/**
+	 * Sends a shotFired(e) message to all listeners.
+	 * 
+	 * @param e
+	 * 			A {@link BattleshipEvent} describing what happened when the shot was fired
+	 */
 	public void sendShotFiredMessage(BattleshipEvent e) {
 		for(BattleshipListener l: listeners) {
 			l.shotFired(e);
 		}
 	}
 	
+	/**
+	 * Sends a gameOver(e) message to all listeners.
+	 * 
+	 * @param e
+	 * 			A {@link BattleshipEvent} containing the gameOver status.
+	 */
 	public void sendGameOverMessage(BattleshipEvent e) {
 		for(BattleshipListener l: listeners) {
 			l.gameOver(e);
 		}
 	}
 	
+	/**
+	 * Sends a shipMoved(e) message to all listeners.
+	 * 
+	 * @param e
+	 * 			A {@link BattleshipEvent} describing the ship that moved.
+	 */	
 	public void sendShipMovedMessage(BattleshipEvent e) {
 		for(BattleshipListener l: listeners) {
 			l.shipMoved(e);

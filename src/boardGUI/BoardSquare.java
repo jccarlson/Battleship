@@ -7,7 +7,7 @@ import java.awt.Graphics;
  * Describes a square on a {@link BoardPanel}. 
  * 
  * @author Jason Carlson
- * @version 1.0
+ * @version 2.0
  * @since 2015-09-19
  */
 public class BoardSquare {
@@ -30,7 +30,6 @@ public class BoardSquare {
 	/**
 	 * Constructor with explicit paint location
 	 * 
-	 * @param l A BattleshipBoard which has the logic for this square
 	 * @param r the row of this square on l
 	 * @param c the column of this square on l
 	 * @param s the size, in pixels, of the width and height to paint
@@ -54,16 +53,28 @@ public class BoardSquare {
 		paintY = pY;
 	}
 	
+	/**
+	 * Changes the color of the square if Missed or Hit.
+	 * 
+	 * @param s 
+	 * 			The result of firing at this Square.
+	 */
 	public void click(char s) {
-		currentColor = sqColors.DEFAULT;
 		if(s == 'M')
 			currentColor = sqColors.MISS;
 		if(s == 'H')
 			currentColor = sqColors.HIT;
 	}
 	
+	/**
+	 * Resets the square to the default color.
+	 */
+	public void reset() {
+		currentColor = sqColors.DEFAULT;
+	}
+	
 	/** 
-	 *  ONLY CALL FROM PARENT paint(g) METHOD! 
+	 *  ONLY CALL FROM PARENT BoardPanel paint(g) METHOD! 
 	 * 	<p>
 	 * 	Paints the square at paintX and paintY of Graphics g.
 	 */
