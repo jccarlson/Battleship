@@ -7,10 +7,13 @@ import java.awt.Graphics;
  * Describes a square on a {@link BoardPanel}. 
  * 
  * @author Jason Carlson
- * @version 2.0
+ * @version 2.1
  * @since 2015-09-19
  */
 public class BoardSquare {
+	
+	/** whether to display a ship circle */
+	private boolean hasShip = false;
 	
 	/** Colors used in painting the BoardSquare */
 	private ColorScheme sqColors;
@@ -71,6 +74,7 @@ public class BoardSquare {
 	 */
 	public void reset() {
 		currentColor = sqColors.DEFAULT;
+		hasShip = false;
 	}
 	
 	/** 
@@ -80,9 +84,17 @@ public class BoardSquare {
 	 */
 	void paint(Graphics g) {
 		g.setColor(currentColor);
-		g.fillRect(paintX, paintY, size + 1, size + 1);
+		g.fillRect(paintX+1, paintY+1, size-1, size-1);
+		if(hasShip) {
+			g.setColor(Color.DARK_GRAY);
+			g.fillOval(paintX+2, paintY+2, size-4, size-4);
+		}
 		g.setColor(sqColors.BORDER);
 		g.drawRect(paintX, paintY, size, size);
+	}
+	
+	public void setHasShip(boolean s) {
+		hasShip = s;
 	}
 	
 		

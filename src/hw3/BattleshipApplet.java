@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.LinkedList;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -30,7 +31,7 @@ import sound.WavPlayer;
  * and the boardAPI package for game logic. Sound is handled with the sound package.
  * 
  * @author Jason Carlson
- * @version 2.0
+ * @version 2.1
  * @since 2015-09-24 
  */
 @SuppressWarnings("serial")
@@ -67,29 +68,31 @@ public class BattleshipApplet extends JApplet implements MouseListener, Battlesh
 		// create a new logical board of size 10 with 5 ships.
 		logicalBoard = new BattleshipBoard(10, 5);
 		
+		// create the GUI BoardPanel
+		guiBoard = new BoardPanel(logicalBoard.getSize(), 20, new ColorScheme(new Color(50, 50, 255), Color.RED, Color.WHITE, Color.BLACK));
+		guiBoard.setVisibleShips(true);
+		
+	
+		// Add BattleshipListeners to the logical board which need to know about events.
+		logicalBoard.addBattleshipListener(guiBoard);
+		logicalBoard.addBattleshipListener(this);
+		
 		// place the ships randomly on the board.
 		placeShips();
-		
+				
 		// lock the board so no more ships can be placed or moved. 
 		logicalBoard.lockBoard();
 		
-		// create the GUI BoardPanel
-		guiBoard = new BoardPanel(logicalBoard.getSize(), 20, new ColorScheme(new Color(50, 50, 255), Color.RED, Color.WHITE, Color.BLACK));
-		
 		// create the status panel
 		sPanel = new StatusPanel(logicalBoard.getShipNames());
+		logicalBoard.addBattleshipListener(sPanel);
 		
 		// configure the reset button to call resetButtonClicked()
 		playButton.addActionListener(this::resetButtonClicked);
 		
 		// the game is not over.
 		isGameOver = false;
-		
-		// Add BattleshipListeners to the logical board which need to know about events.
-		logicalBoard.addBattleshipListener(guiBoard);
-		logicalBoard.addBattleshipListener(sPanel);
-		logicalBoard.addBattleshipListener(this);
-		
+				
 		// Make this applet a MouseListener for the visual board so it knows when it's clicked.
 		guiBoard.addMouseListener(this);
 		
@@ -128,18 +131,18 @@ public class BattleshipApplet extends JApplet implements MouseListener, Battlesh
 	private void resetButtonClicked(ActionEvent event) {
 		
 		logicalBoard = new BattleshipBoard(10, 5);
-		placeShips();
-		logicalBoard.lockBoard();
-		
 		guiBoard.reset();
-				
+		guiBoard.setVisibleShips(true);
 		sPanel.reset();
-		
-		isGameOver = false;
 		
 		logicalBoard.addBattleshipListener(guiBoard);
 		logicalBoard.addBattleshipListener(sPanel);
 		logicalBoard.addBattleshipListener(this);
+		
+		placeShips();
+		logicalBoard.lockBoard();				
+		
+		isGameOver = false;
 						
 		displayMessage("");
 				
@@ -284,5 +287,4 @@ public class BattleshipApplet extends JApplet implements MouseListener, Battlesh
 		// TODO Auto-generated method stub
 		
 	}
-		
 }

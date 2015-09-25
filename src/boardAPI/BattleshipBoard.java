@@ -16,7 +16,7 @@ import boardAPI.battleshipInterface.BattleshipListener;
  * status of the board and its ships.
  * 
  * @author Jason Carlson <jccarlson@miners.utep.edu>
- * @version 1.2
+ * @version 2.1
  * @since 2015-08-30
  */
 public class BattleshipBoard {
@@ -74,7 +74,7 @@ public class BattleshipBoard {
 	// methods
 
 	/**
-	 * Adds a new {@link Ship} to the fleet.
+	 * Adds a new {@link Ship} to the fleet. If successful, sends a shipMoved(e) message to all listeners.
 	 * <p>
 	 * Only available when {@code locked == false}.
 	 * 
@@ -131,7 +131,8 @@ public class BattleshipBoard {
 				}
 			}
 		}
-
+		
+		sendShipMovedMessage(new BattleshipEvent(BattleshipEvent.SHIP_MOVED, null, newShip));
 		fleet.add(newShip);
 		return true;
 	}
@@ -198,6 +199,8 @@ public class BattleshipBoard {
 	 * Moves a ship given by a case insensitive name to the location given by
 	 * (row,column) with the given orientation, if possible, or does nothing.
 	 * <p>
+	 * If successful, sends a shipMoved(e) message to all listeners.
+	 * <p>
 	 * Only available when {@code locked == false}.
 	 * 
 	 * @param name
@@ -225,6 +228,7 @@ public class BattleshipBoard {
 		newShip.move(row, column, isVertical);
 
 		if (addShip(newShip)) {
+			sendShipMovedMessage(new BattleshipEvent(BattleshipEvent.SHIP_MOVED, oldShip, newShip));
 			return true;
 		}
 
@@ -462,6 +466,10 @@ public class BattleshipBoard {
 		for(BattleshipListener l: listeners) {
 			l.shipMoved(e);
 		}
+	}
+	
+	public LinkedList <Ship> getFleet() {
+		return fleet;
 	}
 	
 }

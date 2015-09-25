@@ -6,7 +6,7 @@ package boardAPI.battleshipInterface;
  * Allows the implementing class to receive events from a BattleshipBoard.
  * 
  * @author Jason Carlson <jccarlson @ miners.utep.edu>
- * @version 1.0
+ * @version 1.1
  * @since 2015-09-24
  */
 public interface BattleshipListener {
@@ -29,7 +29,8 @@ public interface BattleshipListener {
 	public void gameOver(BattleshipEvent e);
 	
 	/**
-	 * Method called when a ship is moved. Not currently implemented.
+	 * Method called when a ship is moved or placed. If moved, will have prevShip where the ship used to be and ship where it is now.
+	 * If placed for the first time, prevShip will be null.
 	 * 
 	 * @param e
 	 * 			A BattleshipEvent which will contain the code for SHIP_MOVED and the Ship.

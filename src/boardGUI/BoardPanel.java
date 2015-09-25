@@ -14,7 +14,7 @@ import boardAPI.battleshipInterface.BattleshipListener;
  * each BoardSquare should be painted. 
  * 
  * @author Jason Carlson
- * @version 2.0
+ * @version 2.1
  * @since 2015-09-24 
  */
 @SuppressWarnings("serial")
@@ -30,8 +30,9 @@ public class BoardPanel extends JPanel implements BattleshipListener{
 	/** The BoardSquares which make up the board */
 	BoardSquare [][] squares;
 	
-	
-	
+	/** Show ships from the BattleshipBoard this panel is listening to? */
+	private boolean visShips = false;
+		
 	/**
 	 * Constructor for BoardPanel
 	 * 
@@ -91,7 +92,7 @@ public class BoardPanel extends JPanel implements BattleshipListener{
 	}
 
 	/**
-	 * Gets a BoardSquare which was clicked.
+	 * Gets a BoardSquare by relative pixel location.
 	 * 
 	 * @param x
 	 * 			x-coordinate of the pixel which was clicked in relation to the top-left of this 
@@ -109,7 +110,33 @@ public class BoardPanel extends JPanel implements BattleshipListener{
 			return squares[row][col];
 		return null;	
 	}
-
+	
+	/**
+	 * Gets a BoardSquare by logical board location.
+	 * 
+	 * @param x
+	 * 			x-coordinate of the pixel which was clicked in relation to the top-left of this 
+	 * 			component.
+	 * @param y
+	 * 			y-coordinate of the pixel which was clicked in relation to the top-left of this 
+	 * 			component.
+	 * @return the BoardSquare which was clicked.
+	 */
+	public BoardSquare squareAtGrid(int r, int c) {
+		return squares[r][c];	
+	}
+	
+	public void setVisibleShips(boolean s) {
+		visShips = s;
+		if(!visShips) {
+			for(int r = 0; r < gridSize; r++) {
+				for(int c = 0; c < gridSize; c++) {
+					this.squareAtGrid(r, c).setHasShip(false);
+				}					
+			}
+		}
+	}
+	
 	/**
 	 * shotFired method required by BattleshipListener Interface. 
 	 * <p>
@@ -137,7 +164,20 @@ public class BoardPanel extends JPanel implements BattleshipListener{
 
 	@Override
 	public void shipMoved(BattleshipEvent e) {
-		// TODO Auto-generated method stub
+		if(((e.getEvent() & BattleshipEvent.SHIP_MOVED) == BattleshipEvent.SHIP_MOVED) && visShips) {
+			for(int r = 0; r < gridSize; r++) {
+				for(int c = 0; c < gridSize; c++) {
+					if((e.getPrevShip() != null) && e.getPrevShip().occupies(r, c)) {
+						this.squareAtGrid(r, c).setHasShip(false);
+					}
+					
+					if(e.getShip().occupies(r, c)) {
+						this.squareAtGrid(r, c).setHasShip(true);
+					}
+					
+				}
+			}
+		}
 		
 	}
 }
