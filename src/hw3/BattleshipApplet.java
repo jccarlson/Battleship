@@ -192,7 +192,9 @@ public class BattleshipApplet extends JApplet implements MouseListener, Battlesh
 	public void mouseClicked(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1 && !isGameOver) {
 			BoardSquare s = guiBoard.squareAt(e.getX(), e.getY());
-			logicalBoard.fireShot(s.ROW, s.COL);
+			if(s!=null) {
+				logicalBoard.fireShot(s.ROW, s.COL);
+			}
 		}
 			
 		repaint();
