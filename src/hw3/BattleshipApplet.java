@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -36,6 +35,9 @@ import sound.WavPlayer;
  */
 @SuppressWarnings("serial")
 public class BattleshipApplet extends JApplet implements MouseListener, BattleshipListener{
+	
+	public static final boolean VISIBLE_SHIPS = true;
+	
 	
 	/** Runnable WavPlayers for playing threaded sound clips */
 	private final WavPlayer hitPlay = new WavPlayer("/ship_hit.wav");
@@ -70,7 +72,7 @@ public class BattleshipApplet extends JApplet implements MouseListener, Battlesh
 		
 		// create the GUI BoardPanel
 		guiBoard = new BoardPanel(logicalBoard.getSize(), 20, new ColorScheme(new Color(50, 50, 255), Color.RED, Color.WHITE, Color.BLACK));
-		guiBoard.setVisibleShips(true);
+		guiBoard.setVisibleShips(VISIBLE_SHIPS);
 		
 	
 		// Add BattleshipListeners to the logical board which need to know about events.
@@ -132,7 +134,7 @@ public class BattleshipApplet extends JApplet implements MouseListener, Battlesh
 		
 		logicalBoard = new BattleshipBoard(10, 5);
 		guiBoard.reset();
-		guiBoard.setVisibleShips(true);
+		guiBoard.setVisibleShips(VISIBLE_SHIPS);
 		sPanel.reset();
 		
 		logicalBoard.addBattleshipListener(guiBoard);
