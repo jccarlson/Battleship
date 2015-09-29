@@ -106,7 +106,7 @@ public class BoardPanel extends JPanel implements BattleshipListener{
 		int row = y / scale;
 		int col = x / scale;
 		
-		if(row < gridSize || col < gridSize)
+		if(row < gridSize && col < gridSize)
 			return squares[row][col];
 		return null;	
 	}
