@@ -12,6 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import boardAPI.BattleshipBoard;
@@ -124,31 +125,39 @@ public class BattleshipApplet extends JApplet implements MouseListener, Battlesh
 	}
 	
 	/**
-	 * creates a new instance of BattleshipBoard in logicalBoard, resetting it.
+	 * Creates a new instance of BattleshipBoard in logicalBoard, resetting it.
+	 * Prompts the user for confirmation if the game isn't over yet.
 	 * Adds the visual elements to the new logicalBoard's listeners.
 	 * Resets all the visual elements. Sets gameOver to false.
 	 * 
 	 * @param event
 	 */
 	private void resetButtonClicked(ActionEvent event) {
+		int response = JOptionPane.YES_OPTION;
+		if(!isGameOver) {
+		    response = JOptionPane.showConfirmDialog(this, "Do you want to reset?", "Confirm",
+		            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		}
 		
-		logicalBoard = new BattleshipBoard(10, 5);
-		guiBoard.reset();
-		guiBoard.setVisibleShips(VISIBLE_SHIPS);
-		sPanel.reset();
-		
-		logicalBoard.addBattleshipListener(guiBoard);
-		logicalBoard.addBattleshipListener(sPanel);
-		logicalBoard.addBattleshipListener(this);
-		
-		placeShips();
-		logicalBoard.lockBoard();				
-		
-		isGameOver = false;
-						
-		displayMessage("");
-				
-		repaint();
+		if(response == JOptionPane.YES_OPTION) {
+			logicalBoard = new BattleshipBoard(10, 5);
+			guiBoard.reset();
+			guiBoard.setVisibleShips(VISIBLE_SHIPS);
+			sPanel.reset();
+			
+			logicalBoard.addBattleshipListener(guiBoard);
+			logicalBoard.addBattleshipListener(sPanel);
+			logicalBoard.addBattleshipListener(this);
+			
+			placeShips();
+			logicalBoard.lockBoard();				
+			
+			isGameOver = false;
+							
+			displayMessage("");
+					
+			repaint();
+		}
 	}
 	
 	/** Randomly places 5 ships with predetermined names and sizes on the logicalBoard. */
