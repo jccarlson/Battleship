@@ -15,7 +15,7 @@ import boardAPI.battleshipInterface.BattleshipListener;
  * board, as well as fire shots at various locations, and retrieve the current
  * status of the board and its ships.
  * 
- * @author Jason Carlson <jccarlson@miners.utep.edu>
+ * @author Jason Carlson (jccarlson @ miners.utep.edu)
  * @version 2.1
  * @since 2015-08-30
  */

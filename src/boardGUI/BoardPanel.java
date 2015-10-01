@@ -36,12 +36,9 @@ public class BoardPanel extends JPanel implements BattleshipListener{
 	/**
 	 * Constructor for BoardPanel
 	 * 
-	 * @param gs
-	 * 			The gridSize. should be equal to a {@link BattleshipBoard.getSize()}
-	 * @param s
-	 * 			The scale of each BoardSquare in pixels.
-	 * @param cs
-	 * 			A {@link ColorScheme} describing the colors of the board.
+	 * @param gs	The gridSize should be equal to a (@link BattleshipBoard}
+	 * @param s		The scale of each BoardSquare in pixels.
+	 * @param cs	A {@link ColorScheme} describing the colors of the board.
 	 */
 	public BoardPanel(int gs, int s, ColorScheme cs) {
 		super();
@@ -114,11 +111,11 @@ public class BoardPanel extends JPanel implements BattleshipListener{
 	/**
 	 * Gets a BoardSquare by logical board location.
 	 * 
-	 * @param x
-	 * 			x-coordinate of the pixel which was clicked in relation to the top-left of this 
+	 * @param r
+	 * 			row of the grid to get the square in relation to the top-left of this 
 	 * 			component.
-	 * @param y
-	 * 			y-coordinate of the pixel which was clicked in relation to the top-left of this 
+	 * @param c
+	 * 			column of the grid to get the square in relation to the top-left of this 
 	 * 			component.
 	 * @return the BoardSquare which was clicked.
 	 */

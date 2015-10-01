@@ -29,32 +29,54 @@ public class BattleshipEvent {
 	/** row and column of the event on the board, if necessary */
 	private int row = -1, col = -1;
 	
-	/** Creates an event which is described only by one or more event codes. Convenient for gameOver(e)*/
+	/** Creates an event which is described only by one or more event codes. Convenient for gameOver(e)
+	 * @param e the event code
+	 */
 	public BattleshipEvent(int e) {
 		event = e;
 	}
 	
-	/** Creates an event which is described by an event code and a row and column of a board. Convenient for shotFired(e) without SHIP_SUNK */
+	/** Creates an event which is described by an event code and a row and column of a board. Convenient for shotFired(e) without SHIP_SUNK
+	 * @param e the event code
+	 * @param r the row of the event
+	 * @param c the column of the event
+	 */
 	public BattleshipEvent(int e, int r, int c) {
 		this(e);
 		row = r;
 		col = c;
 	}
 	
-	/** Creates an event which is described by an event code, row, column, and Ship. Convenient for shotFired(e) with SHIP_SUNK */
+	/** Creates an event which is described by an event code, row, column, and Ship. Convenient for shotFired(e) with SHIP_SUNK
+	 * @param e the event code
+	 * @param r the row of the event
+	 * @param c the column of the event
+	 * @param s the ship affected
+	 */
 	public BattleshipEvent(int e, int r, int c, Ship s) {
+	
 		this(e,r,c);
 		ship = s;
 	}
 	
-	/** Creates an event described by an event code and a Ship. Convenient for shipMoved(e) */
+	/** Creates an event described by an event code, the previous ship location, and a Ship. Convenient for shipMoved(e) 
+	 * @param e the event code
+	 * @param p the previous ship
+	 * @param s the current ship
+	 */
 	public BattleshipEvent(int e, Ship p, Ship s) {
 		this(e);
 		ship = s;
 		prevShip = p;
 	}
 	
-	/** Generic Constructor for all possible Events */
+	/** Generic Constructor for all possible Events 
+	 * @param e the event code
+	 * @param r the row of the event
+	 * @param c the column of the event
+	 * @param p the previous ship
+	 * @param s the current ship
+	 */
 	public BattleshipEvent(int e, int r, int c, Ship p, Ship s) {
 		this(e,r,c, s);
 		prevShip = p;

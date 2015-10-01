@@ -17,7 +17,7 @@ import sound.WavPlayer;
  * shot count, and a message confirming the fleet is sunk and the program is
  * terminating. v2.0 has added sound effects utilizing the sound package.
  * 
- * @author Jason Carlson <jccarlson@miners.utep.edu>
+ * @author Jason Carlson (jccarlson @ miners.utep.edu)
  * @version 2.0
  * @since 2015-09-03
  *

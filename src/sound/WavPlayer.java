@@ -14,7 +14,7 @@ import javax.sound.sampled.LineEvent;
 /**
  * Provides a simple player for *.wav files.
  * 
- * @author Jason Carlson <jccarlson@miners.utep.edu>
+ * @author Jason Carlson (jccarlson @ miners.utep.edu)
  * @version 2.0
  * @since 2015-09-03
  */
@@ -28,11 +28,7 @@ public class WavPlayer implements LineListener, Runnable {
 	}
 	
 	/**
-	 * Plays the *.wav file given in the parameter.
-	 * 
-	 * @param filename
-	 *            Filename must be a build-path resource. Format:
-	 *            "/filename.wav"
+	 * Plays the *.wav file given in the field filename. 
 	 */
 	public void playClip() {
 

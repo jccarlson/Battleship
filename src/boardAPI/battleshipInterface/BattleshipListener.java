@@ -5,7 +5,7 @@ package boardAPI.battleshipInterface;
  * <p>
  * Allows the implementing class to receive events from a BattleshipBoard.
  * 
- * @author Jason Carlson <jccarlson @ miners.utep.edu>
+ * @author Jason Carlson  (jccarlson @ miners.utep.edu)
  * @version 1.1
  * @since 2015-09-24
  */
