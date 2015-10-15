@@ -128,7 +128,7 @@ public class BoardPanel extends JPanel implements BattleshipListener{
 		if(!visShips) {
 			for(int r = 0; r < gridSize; r++) {
 				for(int c = 0; c < gridSize; c++) {
-					this.squareAtGrid(r, c).setHasShip(false);
+					this.squareAtGrid(r, c).setShowShip(false);
 				}					
 			}
 		}
@@ -165,11 +165,11 @@ public class BoardPanel extends JPanel implements BattleshipListener{
 			for(int r = 0; r < gridSize; r++) {
 				for(int c = 0; c < gridSize; c++) {
 					if((e.getPrevShip() != null) && e.getPrevShip().occupies(r, c)) {
-						this.squareAtGrid(r, c).setHasShip(false);
+						this.squareAtGrid(r, c).setShowShip(false);
 					}
 					
 					if(e.getShip().occupies(r, c)) {
-						this.squareAtGrid(r, c).setHasShip(true);
+						this.squareAtGrid(r, c).setShowShip(true);
 					}
 					
 				}

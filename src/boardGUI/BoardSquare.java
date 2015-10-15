@@ -13,7 +13,7 @@ import java.awt.Graphics;
 public class BoardSquare {
 	
 	/** whether to display a ship circle */
-	private boolean hasShip = false;
+	private boolean showShip = false;
 	
 	/** Colors used in painting the BoardSquare */
 	private ColorScheme sqColors;
@@ -33,8 +33,8 @@ public class BoardSquare {
 	/**
 	 * Constructor with explicit paint location
 	 * 
-	 * @param r the row of this square on l
-	 * @param c the column of this square on l
+	 * @param r the row of this square on the BoardPanel
+	 * @param c the column of this square on BoardPanel
 	 * @param s the size, in pixels, of the width and height to paint
 	 * @param pX the x pixel location of the top left square of this BoardSquare
 	 * @param pY the y pixel location of the top left square of this BoardSquare
@@ -74,7 +74,7 @@ public class BoardSquare {
 	 */
 	public void reset() {
 		currentColor = sqColors.DEFAULT;
-		hasShip = false;
+		showShip = false;
 	}
 	
 	/** 
@@ -85,7 +85,7 @@ public class BoardSquare {
 	void paint(Graphics g) {
 		g.setColor(currentColor);
 		g.fillRect(paintX+1, paintY+1, size-1, size-1);
-		if(hasShip) {
+		if(showShip) {
 			g.setColor(Color.DARK_GRAY);
 			g.fillOval(paintX+2, paintY+2, size-4, size-4);
 		}
@@ -93,8 +93,8 @@ public class BoardSquare {
 		g.drawRect(paintX, paintY, size, size);
 	}
 	
-	public void setHasShip(boolean s) {
-		hasShip = s;
+	public void setShowShip(boolean s) {
+		showShip = s;
 	}
 	
 		
