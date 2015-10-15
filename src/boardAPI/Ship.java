@@ -12,7 +12,7 @@ package boardAPI;
  * @since 2015-08-30
  */
 
-public class Ship {
+public class Ship implements Cloneable{
 
 	// fields
 
@@ -199,9 +199,17 @@ public class Ship {
 	 * Creates a new ship which has the same fields as this ship.
 	 * 
 	 * @return a new {@link Ship} with the exact same field values as this one.
+	 * @throws CloneNotSupportedException 
 	 */
-	public Ship clone() {
-		return new Ship(name, size, row, column, isVertical);
+	public Object clone() throws CloneNotSupportedException {
+		Ship clone = (Ship)super.clone();
+		clone.isHit = new boolean[this.size];
+		int i = 0;
+		for(boolean b: this.isHit) {
+			clone.isHit[i] = b;
+			i++;
+		}
+		return clone;		
 	}
 
 }

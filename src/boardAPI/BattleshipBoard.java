@@ -215,8 +215,9 @@ public class BattleshipBoard {
 	 *            {@code true} if the ship is oriented vertically, {@code false}
 	 *            if horizontal.
 	 * @return {@code true} if moved successfully, {@code false} otherwise.
+	 * @throws CloneNotSupportedException 
 	 */
-	public boolean moveShip(String name, int row, int column, boolean isVertical) {
+	public boolean moveShip(String name, int row, int column, boolean isVertical) throws CloneNotSupportedException {
 		if (locked)
 			return false;
 
@@ -224,7 +225,7 @@ public class BattleshipBoard {
 		if (oldShip == null)
 			return false;
 
-		Ship newShip = oldShip.clone();
+		Ship newShip = (Ship)oldShip.clone();
 		newShip.move(row, column, isVertical);
 
 		if (addShip(newShip)) {
