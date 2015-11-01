@@ -86,7 +86,7 @@ public class BoardSquare {
 		g.setColor(currentColor);
 		g.fillRect(paintX+1, paintY+1, size-1, size-1);
 		if(showShip) {
-			g.setColor(Color.DARK_GRAY);
+			g.setColor(sqColors.SHIP);
 			g.fillOval(paintX+2, paintY+2, size-4, size-4);
 		}
 		g.setColor(sqColors.BORDER);

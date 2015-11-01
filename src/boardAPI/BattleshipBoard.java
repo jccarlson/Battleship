@@ -324,7 +324,7 @@ public class BattleshipBoard {
 					}
 				}
 				else {
-					sendShotFiredMessage(new BattleshipEvent(BattleshipEvent.HIT, row, column));
+					sendShotFiredMessage(new BattleshipEvent(BattleshipEvent.HIT, row, column, next));
 				}
 				return true;
 			}

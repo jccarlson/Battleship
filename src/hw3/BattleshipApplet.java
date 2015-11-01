@@ -72,7 +72,7 @@ public class BattleshipApplet extends JApplet implements MouseListener, Battlesh
 		logicalBoard = new BattleshipBoard(10, 5);
 		
 		// create the GUI BoardPanel
-		guiBoard = new BoardPanel(logicalBoard.getSize(), 20, new ColorScheme(new Color(50, 50, 255), Color.RED, Color.WHITE, Color.BLACK));
+		guiBoard = new BoardPanel(logicalBoard.getSize(), 20, new ColorScheme(new Color(50, 50, 255), Color.RED, Color.WHITE, Color.DARK_GRAY, Color.BLACK));
 		guiBoard.setVisibleShips(VISIBLE_SHIPS);
 		
 	

@@ -6,14 +6,12 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import boardAPI.BattleshipBoard;
 import boardAPI.battleshipInterface.BattleshipEvent;
 import boardAPI.battleshipInterface.BattleshipListener;
 
 @SuppressWarnings("serial")
 public class StatusPanel extends JPanel implements BattleshipListener{
 	
-	BattleshipBoard logicalBoard;
 	JLabel [] shipStatus;
 	final JLabel whitespace = new JLabel("          ");
 	JLabel shotsFired;
