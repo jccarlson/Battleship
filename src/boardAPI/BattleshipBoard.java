@@ -38,11 +38,11 @@ public class BattleshipBoard {
 	 * fired
 	 */
 	private boolean locked;
-	
-	//Listeners
-	
+
+	// Listeners
+
 	/** All the BattleshipListeners of this board */
-	private LinkedList <BattleshipListener> listeners;
+	private LinkedList<BattleshipListener> listeners;
 
 	// Constructor
 
@@ -67,14 +67,15 @@ public class BattleshipBoard {
 				status[i][j] = ' ';
 			}
 		}
-		
+
 		listeners = new LinkedList<BattleshipListener>();
 	}
 
 	// methods
 
 	/**
-	 * Adds a new {@link Ship} to the fleet. If successful, sends a shipMoved(e) message to all listeners.
+	 * Adds a new {@link Ship} to the fleet. If successful, sends a shipMoved(e)
+	 * message to all listeners.
 	 * <p>
 	 * Only available when {@code locked == false}.
 	 * 
@@ -131,7 +132,7 @@ public class BattleshipBoard {
 				}
 			}
 		}
-		
+
 		sendShipMovedMessage(new BattleshipEvent(BattleshipEvent.SHIP_MOVED, null, newShip));
 		fleet.add(newShip);
 		return true;
@@ -215,7 +216,7 @@ public class BattleshipBoard {
 	 *            {@code true} if the ship is oriented vertically, {@code false}
 	 *            if horizontal.
 	 * @return {@code true} if moved successfully, {@code false} otherwise.
-	 * @throws CloneNotSupportedException 
+	 * @throws CloneNotSupportedException
 	 */
 	public boolean moveShip(String name, int row, int column, boolean isVertical) throws CloneNotSupportedException {
 		if (locked)
@@ -225,7 +226,7 @@ public class BattleshipBoard {
 		if (oldShip == null)
 			return false;
 
-		Ship newShip = (Ship)oldShip.clone();
+		Ship newShip = (Ship) oldShip.clone();
 		newShip.move(row, column, isVertical);
 
 		if (addShip(newShip)) {
@@ -281,7 +282,7 @@ public class BattleshipBoard {
 	 * <p>
 	 * To check if the shot hit or missed, use {@link #checkStatus(int, int)}.
 	 * <p>
-	 * Sends shotFired() and possibly gameOver() messages to listeners 
+	 * Sends shotFired() and possibly gameOver() messages to listeners
 	 * 
 	 * @param row
 	 *            The row of the space to shoot at.
@@ -308,7 +309,7 @@ public class BattleshipBoard {
 			sendShotFiredMessage(new BattleshipEvent(BattleshipEvent.INVALID, row, column));
 			return false;
 		}
-		
+
 		numShots++;
 
 		// is it a hit?
@@ -317,13 +318,13 @@ public class BattleshipBoard {
 			Ship next = l.next();
 			if (next.tryShot(row, column)) {
 				status[row][column] = 'H';
-				if(next.isSunk()) {
-					sendShotFiredMessage(new BattleshipEvent(BattleshipEvent.HIT | BattleshipEvent.SHIP_SUNK, row, column, next));
-					if(gameLost()) {
-						sendGameOverMessage(new BattleshipEvent(BattleshipEvent.GAME_OVER));					
+				if (next.isSunk()) {
+					sendShotFiredMessage(
+							new BattleshipEvent(BattleshipEvent.HIT | BattleshipEvent.SHIP_SUNK, row, column, next));
+					if (gameLost()) {
+						sendGameOverMessage(new BattleshipEvent(BattleshipEvent.GAME_OVER));
 					}
-				}
-				else {
+				} else {
 					sendShotFiredMessage(new BattleshipEvent(BattleshipEvent.HIT, row, column, next));
 				}
 				return true;
@@ -414,63 +415,66 @@ public class BattleshipBoard {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Adds a new listener.
 	 * 
-	 * @param l a new {@link BattleshipListener}
+	 * @param l
+	 *            a new {@link BattleshipListener}
 	 */
 	public void addBattleshipListener(BattleshipListener l) {
 		listeners.add(l);
 	}
-	
+
 	/**
 	 * Removes a listener.
 	 * 
-	 * @param l a {@link BattleshipListener} that has been previously added.
+	 * @param l
+	 *            a {@link BattleshipListener} that has been previously added.
 	 */
 	public void removeBattleshipListener(BattleshipListener l) {
 		listeners.remove(l);
 	}
-	
+
 	/**
 	 * Sends a shotFired(e) message to all listeners.
 	 * 
 	 * @param e
-	 * 			A {@link BattleshipEvent} describing what happened when the shot was fired
+	 *            A {@link BattleshipEvent} describing what happened when the
+	 *            shot was fired
 	 */
 	public void sendShotFiredMessage(BattleshipEvent e) {
-		for(BattleshipListener l: listeners) {
+		for (BattleshipListener l : listeners) {
 			l.shotFired(e);
 		}
 	}
-	
+
 	/**
 	 * Sends a gameOver(e) message to all listeners.
 	 * 
 	 * @param e
-	 * 			A {@link BattleshipEvent} containing the gameOver status.
+	 *            A {@link BattleshipEvent} containing the gameOver status.
 	 */
 	public void sendGameOverMessage(BattleshipEvent e) {
-		for(BattleshipListener l: listeners) {
+		for (BattleshipListener l : listeners) {
 			l.gameOver(e);
 		}
 	}
-	
+
 	/**
 	 * Sends a shipMoved(e) message to all listeners.
 	 * 
 	 * @param e
-	 * 			A {@link BattleshipEvent} describing the ship that moved.
-	 */	
+	 *            A {@link BattleshipEvent} describing the ship that moved.
+	 */
 	public void sendShipMovedMessage(BattleshipEvent e) {
-		for(BattleshipListener l: listeners) {
+		for (BattleshipListener l : listeners) {
 			l.shipMoved(e);
 		}
 	}
-	
-	public LinkedList <Ship> getFleet() {
+
+	public LinkedList<Ship> getFleet() {
 		return fleet;
 	}
-	
+
 }

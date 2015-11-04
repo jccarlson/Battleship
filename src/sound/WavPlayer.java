@@ -10,7 +10,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 
-
 /**
  * Provides a simple player for *.wav files.
  * 
@@ -22,21 +21,21 @@ public class WavPlayer implements LineListener, Runnable {
 
 	private boolean isComplete = false;
 	private String filename;
-	
+
 	public WavPlayer(String f) {
 		filename = f;
 	}
-	
+
 	/**
-	 * Plays the *.wav file given in the field filename. 
+	 * Plays the *.wav file given in the field filename.
 	 */
 	public void playClip() {
 
 		try {
 			isComplete = false;
 			AudioInputStream aStream = AudioSystem.getAudioInputStream(WavPlayer.class.getResource(filename));
-			//AudioFormat f = aStream.getFormat();
-			//DataLine.Info i = new DataLine.Info(Clip.class, f);
+			// AudioFormat f = aStream.getFormat();
+			// DataLine.Info i = new DataLine.Info(Clip.class, f);
 			Clip c = (Clip) AudioSystem.getClip();
 
 			c.addLineListener(this);
@@ -75,7 +74,7 @@ public class WavPlayer implements LineListener, Runnable {
 
 	@Override
 	public void run() {
-		playClip();		
+		playClip();
 	}
 
 }
