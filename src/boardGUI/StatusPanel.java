@@ -1,7 +1,5 @@
 package boardGUI;
 
-import java.awt.Dimension;
-
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -39,7 +37,7 @@ public class StatusPanel extends JPanel implements BattleshipListener{
 		shotsFired = new JLabel("Shots Fired: " + shots);
 		add(whitespace);
 		add(shotsFired);
-		this.setPreferredSize(new Dimension(200,200));
+	//	this.setPreferredSize(new Dimension(200,200));
 	}
 
 	public void reset() {

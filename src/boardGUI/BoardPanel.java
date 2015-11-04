@@ -47,7 +47,7 @@ public class BoardPanel extends JPanel implements BattleshipListener{
 		
 		// Set the preferred size of this component to the width and height of the board in pixels,
 		// based on the gridSize and scale.
-		setPreferredSize(new Dimension(gridSize * scale, gridSize * scale));
+		setPreferredSize(new Dimension(gridSize * scale + 1, gridSize * scale + 1));
 		
 		squares = new BoardSquare[gridSize][gridSize];
 		boardColors = cs;

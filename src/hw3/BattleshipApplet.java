@@ -31,37 +31,37 @@ import sound.WavPlayer;
  * and the boardAPI package for game logic. Sound is handled with the sound package.
  * 
  * @author Jason Carlson
- * @version 2.1
+ * @version 2.2
  * @since 2015-09-24 
  */
 @SuppressWarnings("serial")
 public class BattleshipApplet extends JApplet implements MouseListener, BattleshipListener{
 	
-	public static final boolean VISIBLE_SHIPS = true;
+	public static final boolean VISIBLE_SHIPS = false;
 	
 	
 	/** Runnable WavPlayers for playing threaded sound clips */
-	private final WavPlayer hitPlay = new WavPlayer("/ship_hit.wav");
-	private final WavPlayer sinkPlay = new WavPlayer("/ship_sunk.wav");
+	protected final WavPlayer hitPlay = new WavPlayer("/ship_hit.wav");
+	protected final WavPlayer sinkPlay = new WavPlayer("/ship_sunk.wav");
 	
 	/** The logical game board */
-	private BattleshipBoard logicalBoard;
+	protected BattleshipBoard logicalBoard;
 	
 	/** The visual game board */
-	private BoardPanel guiBoard;
+	protected BoardPanel guiBoard;
 	
 	/** The visual Status Panel */
-	private StatusPanel sPanel;
+	protected StatusPanel sPanel;
 	
 	
 	/** To start a new game. */
-	private final JButton playButton = new JButton("RESET");
+	protected final JButton playButton = new JButton("RESET");
 	
 	/** Message bar to display the number of shots and the outcome. */
-	private final JLabel msgBar = new JLabel("");
+	protected final JLabel msgBar = new JLabel("");
 	
 	/** true if all ships sunk */
-	private boolean isGameOver;
+	protected boolean isGameOver;
 	
 	/** 
 	 * called upon initialization of the applet
@@ -104,7 +104,7 @@ public class BattleshipApplet extends JApplet implements MouseListener, Battlesh
 	}
 	
 	/** Configure UI consisting of a play button, a board panel, a status panel, and a message Bar. */
-	private void configureGui() {
+	protected void configureGui() {
 		setLayout(new BorderLayout());
 		JPanel buttons = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		buttons.setBorder(BorderFactory.createEmptyBorder(0,5,0,0));
@@ -120,7 +120,7 @@ public class BattleshipApplet extends JApplet implements MouseListener, Battlesh
 	}
 	
 	/**Display the given message to the message bar. */
-	private void displayMessage(String msg) {
+	protected void displayMessage(String msg) {
 		msgBar.setText(msg);
 	}
 	
@@ -132,7 +132,7 @@ public class BattleshipApplet extends JApplet implements MouseListener, Battlesh
 	 * 
 	 * @param event
 	 */
-	private void resetButtonClicked(ActionEvent event) {
+	protected void resetButtonClicked(ActionEvent event) {
 		int response = JOptionPane.YES_OPTION;
 		if(!isGameOver) {
 		    response = JOptionPane.showConfirmDialog(this, "Do you want to reset?", "Confirm",
@@ -161,7 +161,7 @@ public class BattleshipApplet extends JApplet implements MouseListener, Battlesh
 	}
 	
 	/** Randomly places 5 ships with predetermined names and sizes on the logicalBoard. */
-	private void placeShips() {
+	protected void placeShips() {
 		// create the ships
 
 		Ship[] fleet = new Ship[5];
@@ -263,7 +263,7 @@ public class BattleshipApplet extends JApplet implements MouseListener, Battlesh
 			
 			// if a ship was sunk append "You sunk the <shipName>!!!" to the display message
 			if ((e.getEvent() & BattleshipEvent.SHIP_SUNK) == BattleshipEvent.SHIP_SUNK) {
-				dispMsg += "You sunk the " + e.getShip().getName() + "!!! ";
+				dispMsg += e.getShip().getName() + " SUNK!!! ";
 				playHit = false;
 			}
 			// display the completed message in the message bar. 
