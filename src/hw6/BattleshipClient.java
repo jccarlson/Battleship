@@ -23,6 +23,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.KeyStroke;
+
 import boardAPI.BattleshipBoard;
 import boardAPI.Ship;
 import boardAPI.battleshipInterface.BattleshipEvent;
@@ -258,12 +260,16 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		networkMenu.setMnemonic(KeyEvent.VK_N);
 		
 		//build the Game Menu
-		JMenuItem menuItem = new JMenuItem("Play New Game",KeyEvent.VK_P);
+		JMenuItem menuItem = new JMenuItem("Play New Game", new ImageIcon("resources/play.png"));
+		menuItem.setMnemonic(KeyEvent.VK_P);	
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, java.awt.event.InputEvent.ALT_DOWN_MASK));
 		menuItem.addActionListener(e -> playNewGame());
 		menuItem.setEnabled(true);
 		gameMenu.add(menuItem);
 		
-		menuItem = new JMenuItem("Resign Current Game", KeyEvent.VK_R);
+		menuItem = new JMenuItem("Resign Current Game", new ImageIcon("resources/quit.png"));
+		menuItem.setMnemonic(KeyEvent.VK_R);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, java.awt.event.InputEvent.ALT_DOWN_MASK));
 		menuItem.addActionListener(e -> resignGame());
 		menuItem.setEnabled(false);
 		gameMenu.add(menuItem);
@@ -271,6 +277,7 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		gameMenu.add(new JSeparator());
 		
 		menuItem = new JMenuItem("Quit Battleship", KeyEvent.VK_Q);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_DOWN_MASK));
 		menuItem.addActionListener(e -> {
 			resignGame();
 			System.exit(0);
@@ -278,11 +285,15 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		gameMenu.add(menuItem);
 		
 		// build the Network Menu
-		menuItem = new JMenuItem("Connect to Server", KeyEvent.VK_C);
+		menuItem = new JMenuItem("Connect to Server", new ImageIcon("resources/connect_server.png"));
+		menuItem.setMnemonic(KeyEvent.VK_C);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK));
 		menuItem.addActionListener(e -> connectServer());
 		networkMenu.add(menuItem);
 		
-		menuItem = new JMenuItem("Launch Server", KeyEvent.VK_S);
+		menuItem = new JMenuItem("Launch Server", new ImageIcon("resources/launch_server.png"));
+		menuItem.setMnemonic(KeyEvent.VK_S);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, java.awt.event.InputEvent.ALT_DOWN_MASK));
 		menuItem.addActionListener(e -> launchServer());
 		networkMenu.add(menuItem);
 		
@@ -412,9 +423,8 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 	private void placeShips() {
 		Ship[] fleet = new Ship[5];
 
-		// creates a new ship named "Aircraft Carrier", which is 5 units long
-		// and
-		// horizontal, at (0,0)
+		// creates a new ship named "Aircraft carrier", which is 5 units long
+		// and horizontal, at (0,0)
 		fleet[0] = new Ship("Aircraft carrier", 5, 0, 0, false);
 		fleet[1] = new Ship("Battleship", 4, 0, 0, false);
 		fleet[2] = new Ship("Frigate", 3, 0, 0, false);
@@ -422,8 +432,7 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		fleet[4] = new Ship("Minesweeper", 2, 0, 0, false);
 
 		// randomly add the ships to the board and keep trying until a valid
-		// placement
-		// is found
+		// placement is found
 		Random rng = new Random();
 		int n = logicalBoard.getSize();
 		for (int i = 0; i < fleet.length; i++) {
