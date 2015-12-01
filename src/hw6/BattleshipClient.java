@@ -12,12 +12,9 @@ import java.awt.event.MouseListener;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -26,8 +23,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
-
 import boardAPI.BattleshipBoard;
 import boardAPI.Ship;
 import boardAPI.battleshipInterface.BattleshipEvent;
@@ -209,28 +204,16 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 			}
 
 			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mousePressed(MouseEvent e) {}
 
 			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseReleased(MouseEvent e) {}
 
 			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseEntered(MouseEvent e) {}
 
 			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseExited(MouseEvent e) {}
 			
 		});
 		opponentArea.add(opponentGuiBoard);
@@ -679,6 +662,11 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 				oppName = string;
 				opponentArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Opponent: " + oppName));
 				opponentArea.repaint();
+				gameInProgress = true;
+				this.getJMenuBar().getMenu(0).getItem(0).setEnabled(false);
+				playButton.setEnabled(false);
+				this.getJMenuBar().getMenu(0).getItem(1).setEnabled(true);
+				stopButton.setEnabled(true);
 				initializeGame();
 			}
 			else {
