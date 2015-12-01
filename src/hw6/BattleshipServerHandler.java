@@ -98,15 +98,19 @@ public class BattleshipServerHandler {
 			
 			if(msg.equals("users")) {
 				List <Boolean> userAvailable = new LinkedList<>();
-				int i = 0;
+				List <String> users = new LinkedList<>();
+				System.out.print("users: ");
 				for(String user: args) {
 					if(user.charAt(0) == '+')
-						userAvailable.add(i, new Boolean(true));
+						userAvailable.add(new Boolean(true));
 					else
-						userAvailable.add(i,new Boolean(false));
-					args.set(i, user.substring(1));				
+						userAvailable.add(new Boolean(false));
+					users.add(user.substring(1));
+					System.out.print(user.substring(1) + " ");
+					
 				}
-				client.updateUsers(args, userAvailable);
+				System.out.println();
+				client.updateUsers(users, userAvailable);
 			}
 			
 			if(msg.equals("ack_strategy_play")) {

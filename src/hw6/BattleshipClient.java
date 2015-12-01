@@ -512,10 +512,10 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 
 	@Override
 	public void acknowledgeUserMsg(boolean accepted, String reason) {
+		nameAcknowledged = true;
 		nameAccepted = accepted;
 		if(!accepted)
-			JOptionPane.showMessageDialog(this, "Reason: " + reason, "Name Rejected", JOptionPane.ERROR_MESSAGE);
-		nameAcknowledged = true;
+			JOptionPane.showMessageDialog(this, "Reason: " + ((reason != null) ? reason : ""), "Name Rejected", JOptionPane.ERROR_MESSAGE);
 	}
 
 	@Override
