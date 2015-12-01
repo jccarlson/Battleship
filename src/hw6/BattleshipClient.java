@@ -139,27 +139,27 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		
 		Dimension button_size = new Dimension(32,32);
 		
-		playButton = new JButton(new ImageIcon("resources/play.png"));
+		playButton = new JButton(new ImageIcon(BattleshipClient.class.getResource("/play.png")));
 		playButton.addActionListener(e -> playNewGame());
 		playButton.setPreferredSize(button_size);
 		playButton.setToolTipText("Play a New Game");
 		playButton.setEnabled(true);
 		buttonBar.add(playButton);
 		
-		stopButton = new JButton(new ImageIcon("resources/quit.png"));
+		stopButton = new JButton(new ImageIcon(BattleshipClient.class.getResource("/quit.png")));
 		stopButton.addActionListener(e -> resignGame());
 		stopButton.setPreferredSize(button_size);
 		stopButton.setToolTipText("Resign the Current Game");
 		stopButton.setEnabled(false);
 		buttonBar.add(stopButton);
 		
-		connectServerButton = new JButton(new ImageIcon("resources/connect_server.png"));
+		connectServerButton = new JButton(new ImageIcon(BattleshipClient.class.getResource("/connect_server.png")));
 		connectServerButton.addActionListener(e -> connectServer());
 		connectServerButton.setPreferredSize(button_size);
 		connectServerButton.setToolTipText("Connect to a Battleship Server");
 		buttonBar.add(connectServerButton);
 		
-		launchServerButton = new JButton(new ImageIcon("resources/launch_server.png"));
+		launchServerButton = new JButton(new ImageIcon(BattleshipClient.class.getResource("/launch_server.png")));
 		launchServerButton.addActionListener(e -> launchServer());
 		launchServerButton.setPreferredSize(button_size);
 		launchServerButton.setToolTipText("Launch a Local Battleship Server");
@@ -201,8 +201,7 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				clickBoard(e.getX(), e.getY());
-				
+				clickBoard(e.getX(), e.getY());				
 			}
 
 			@Override
@@ -260,14 +259,14 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		networkMenu.setMnemonic(KeyEvent.VK_N);
 		
 		//build the Game Menu
-		JMenuItem menuItem = new JMenuItem("Play New Game", new ImageIcon("resources/play.png"));
+		JMenuItem menuItem = new JMenuItem("Play New Game", new ImageIcon(BattleshipClient.class.getResource("/play.png")));
 		menuItem.setMnemonic(KeyEvent.VK_P);	
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, java.awt.event.InputEvent.ALT_DOWN_MASK));
 		menuItem.addActionListener(e -> playNewGame());
 		menuItem.setEnabled(true);
 		gameMenu.add(menuItem);
 		
-		menuItem = new JMenuItem("Resign Current Game", new ImageIcon("resources/quit.png"));
+		menuItem = new JMenuItem("Resign Current Game", new ImageIcon(BattleshipClient.class.getResource("/quit.png")));
 		menuItem.setMnemonic(KeyEvent.VK_R);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, java.awt.event.InputEvent.ALT_DOWN_MASK));
 		menuItem.addActionListener(e -> resignGame());
@@ -285,13 +284,13 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		gameMenu.add(menuItem);
 		
 		// build the Network Menu
-		menuItem = new JMenuItem("Connect to Server", new ImageIcon("resources/connect_server.png"));
+		menuItem = new JMenuItem("Connect to Server", new ImageIcon(BattleshipClient.class.getResource("/connect_server.png")));
 		menuItem.setMnemonic(KeyEvent.VK_C);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK));
 		menuItem.addActionListener(e -> connectServer());
 		networkMenu.add(menuItem);
 		
-		menuItem = new JMenuItem("Launch Server", new ImageIcon("resources/launch_server.png"));
+		menuItem = new JMenuItem("Launch Server", new ImageIcon(BattleshipClient.class.getResource("/launch_server.png")));
 		menuItem.setMnemonic(KeyEvent.VK_S);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, java.awt.event.InputEvent.ALT_DOWN_MASK));
 		menuItem.addActionListener(e -> launchServer());
