@@ -22,8 +22,15 @@ public class BattleshipServerHandler {
 	/** true if connected to a server */
 	private boolean connected;
 	
+	/** the client this handler serves */
 	BattleshipServerListener client;
 	
+	/**
+	 * constructs a handler with an attached client for server at hostname:port 
+	 * @param client client class
+	 * @param hostName server name
+	 * @param port server port
+	 */
 	public BattleshipServerHandler(BattleshipServerListener client, String hostName, int port) {
 		this.client = client;
 		try {
@@ -50,6 +57,10 @@ public class BattleshipServerHandler {
 		}).start();
 	}
 
+	/**
+	 * parses a message from the server
+	 * @param line the raw message
+	 */
 	private void processMessage(String line) {
 		
 		String msg = null;
@@ -161,6 +172,9 @@ public class BattleshipServerHandler {
 		return;		
 	}
 
+	/**
+	 * attempts a clean disconnect from the server
+	 */
 	public void tryDisconnect() {
 		
 		if(connected) {
@@ -177,36 +191,64 @@ public class BattleshipServerHandler {
 		}
 	}
 
+	/**
+	 * @return true if connected to a server
+	 */
 	public boolean isConnected() {
 		return connected;
 	}
 
+	/**
+	 * sends a user: message
+	 * @param name the player's name
+	 */
 	public void sendNameMsg(String name) {
 		serverOut.println("user:" + name);	
 		serverOut.flush();
 	}
 	
+	/**
+	 * sends a shot: message
+	 * @param r the row of the shot
+	 * @param c the column of the shot
+	 */
 	public void fireShot(int r, int c) {
 		serverOut.println("shot:" + (c+1) + "," + (r+1));
 		serverOut.flush();
 	}
 
+	/**
+	 * resigns from the game
+	 */
 	public void sendGGMsg() {
 		serverOut.println("gg:");	
 		serverOut.flush();
 		
 	}
 
+	/**
+	 * requests for an opponent to play
+	 * @param opponent the opponent
+	 */
 	public void sendUserPlayMsg(String opponent) {
 		serverOut.println("user_play:" + opponent);	
 		serverOut.flush();
 	}
 
+	/**
+	 * requests to play against a strategy
+	 * @param opponent the opposing strategy
+	 */
 	public void sendStrategyPlayMsg(String opponent) {
 		serverOut.println("strategy_play:" + opponent);	
 		serverOut.flush();
 	}
 
+	/**
+	 * sends a ships: message
+	 * @param fleet the fleet of ships and how they are aligned
+	 * @see boardAPI.Ship
+	 */
 	public void sendShipsMsg(List <Ship> fleet) {
 		String msg = "ships:";
 		for(Ship s: fleet) {
@@ -227,6 +269,10 @@ public class BattleshipServerHandler {
 		serverOut.flush();		
 	}
 
+	/**
+	 * responds to a user_play: message with an ack_user_play: message
+	 * @param b true if agree to play
+	 */
 	public void sendUserPlayResponseMsg(boolean b) {
 		serverOut.println("ack_user_play:" + b);
 		serverOut.flush();		

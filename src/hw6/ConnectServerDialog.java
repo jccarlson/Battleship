@@ -14,20 +14,39 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * a package visibility class which calls a customized dialog to get server info from the user
+ * @author Jason Carlson
+ * @version 1.0
+ * @since 2015-12-01
+ */
 @SuppressWarnings("serial")
 class ConnectServerDialog extends JDialog{
 	
+	/** the server handler to return */
 	BattleshipServerHandler sh = null;
+	
+	/** the server listener to attach to the handler */
 	BattleshipServerListener l;
 	
+	/** text input fields */
 	JTextField serverInput;
 	JTextField portInput;
 	
+	/** buttons */
 	JButton connectButton;
 	JButton cancelButton;
 	
+	/** true if the window is still visible */
 	boolean prompting;
 	
+	
+	/**
+	 * Constructs a dialog which asks for server and port info
+	 * @param l a listener which will be attached to the handler
+	 * @param owner the frame which owns this dialog
+	 * @param title the title of the dialog
+	 */
 	ConnectServerDialog(BattleshipServerListener l, Frame owner, String title) {
 		super(owner, title, true);
 		this.l = l;
@@ -112,12 +131,14 @@ class ConnectServerDialog extends JDialog{
 		prompting = false;
 	}
 
+	/** when the cancel button is clicked */
 	private void cancel() {
 		sh = null;
 		prompting = false;
 		this.setVisible(false);
 	}
 
+	/** when the connect button is clicked */
 	private void connect() {
 		try {
 			sh = new BattleshipServerHandler(l, serverInput.getText().trim(), Integer.parseInt(portInput.getText().trim()));
@@ -136,6 +157,7 @@ class ConnectServerDialog extends JDialog{
 		
 	}
 	
+	/** shows the dialog and waits til it's closed to return the server handler it connected to (or null if cancelled) */
 	BattleshipServerHandler showDialog() {
 		setVisible(true);
 		while(prompting){

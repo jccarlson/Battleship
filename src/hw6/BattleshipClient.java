@@ -40,6 +40,7 @@ import sound.WavPlayer;
 @SuppressWarnings("serial")
 public class BattleshipClient extends JFrame implements BattleshipServerListener {
 	
+	/** The server application */
 	private edu.utep.cs.cs3331.hw5.server.Main server;
 	
 	/** The player's logical board */
@@ -66,26 +67,44 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 	/** Names of the player and opponent */
 	private String playerName, oppName;
 
+	/** true if there is a game happening */
 	private boolean gameInProgress;
+	
+	/** true if it's the player's turn */
 	private boolean playerTurn;
 	
+	/** the status bar at the bottom of the screen. displays player turn and server info */
 	private JLabel statusBar;
+	
+	/** the area with the player's board and status. useful for updating player's name */
 	private JPanel playerArea;
+	
+	/** the area with the opponent's board and status. useful for updating opponent's name */
 	private JPanel opponentArea;
 	
+	/** the handler class for the server */
 	private BattleshipServerHandler serverHandler;
 	
+	/** sound effects */
 	private WavPlayer hitPlayer = new WavPlayer("/ship_hit.wav");
 	private WavPlayer sunkPlayer = new WavPlayer("/ship_sunk.wav");
 	
+	/** updating list of users to play with */
 	private List <String> availableUsers;
 	
+	/** updating list of strategies to play with */
 	private List <String> availableStrats;
 
+	/** true if connected to a server */
 	private boolean connected;
+	
+	/** true if a response from the server to the user: msg has arrived */
 	private boolean nameAcknowledged;
+	
+	/** true if the server accepted the name */
 	private boolean nameAccepted;
 	
+	/** sets initial vales and window behavior */
 	public BattleshipClient() {
 		super();
 		playerName = "Player";
@@ -291,6 +310,7 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		return mbar;
 	}
 
+	/** launches the external server application */
 	private void launchServer() {
 		
 		EventQueue.invokeLater(() -> {
@@ -304,6 +324,7 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		    });
 	}
 
+	/** opens a dialog which prompts for server info, and connects */
 	private void connectServer() {
 		
 		ConnectServerDialog csDialog = new ConnectServerDialog(this, this, "Input the Server and Port");
@@ -315,6 +336,7 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		}
 	}
 
+	/** gets a name for the player and checks with the server to see if it's available */
 	private void getPlayerName() {
 		String name = null;
 		nameAccepted = false;
@@ -341,11 +363,17 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		}
 	}
 
+	
+	/** what happens when the stop button is pressed - game is resigned and reset */
 	private void resignGame() {
 		reset();
 		return;
 	}
 
+	/** 
+	 * what happens when the play button is pressed - dialogs determine if user wants to play vs. strategy or a player, and initializes
+	 * the game.
+	 */
 	private void playNewGame() {
 		if(!gameInProgress) {
 			if(connected) {
@@ -386,6 +414,7 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		return;
 	}
 	
+	/** starts a new game, with a new logical board for the player and randomly placed ships. */
 	private void initializeGame() {
 		logicalBoard = new BattleshipBoard(10, 5);
 		logicalBoard.addBattleshipListener(statusPanel);
@@ -396,6 +425,7 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		serverHandler.sendShipsMsg(logicalBoard.getFleet());
 	}
 	
+	/** randomly places the ships */
 	private void placeShips() {
 		Ship[] fleet = new Ship[5];
 
@@ -425,6 +455,7 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		}
 	}
 
+	/** resets the gui components and resigns if a game is in progress */
 	private void reset() {
 		if(gameInProgress)
 			serverHandler.sendGGMsg();
@@ -443,6 +474,7 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		getContentPane().repaint();		
 	}
 	
+	/** main entry point for the application */
 	public static void main(String [] args) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 
@@ -454,6 +486,11 @@ public class BattleshipClient extends JFrame implements BattleshipServerListener
 		});
 	}
 
+
+	/////////////////////////////////////////////////////////////////////////////////////
+	// The following methods are inherited from the BattleshipServerListener Interface //
+	/////////////////////////////////////////////////////////////////////////////////////
+	
 	@Override
 	public void badConnectionMsg() {
 		JOptionPane.showMessageDialog(this, "Bad Connection", "Bad Connection", JOptionPane.ERROR_MESSAGE);
