@@ -1,6 +1,7 @@
 package boardGUI;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -8,7 +9,6 @@ import java.util.LinkedList;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import boardAPI.Ship;
 import boardAPI.battleshipInterface.BattleshipEvent;
 import boardAPI.battleshipInterface.BattleshipListener;
@@ -58,6 +58,7 @@ public class ImprovedStatusPanel extends JPanel implements BattleshipListener {
 		shipStatus = new JLabel[size];
 		hitGraphics = new ShipDisplay[size];
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		
 
 		statusContainers = new JPanel[size];
 		Iterator<Ship> s = ships.iterator();
@@ -69,17 +70,19 @@ public class ImprovedStatusPanel extends JPanel implements BattleshipListener {
 
 		for (int i = 0; i < shipStatus.length; i++) {
 			statusContainers[i] = new JPanel();
-			statusContainers[i].add(shipStatus[i] = new JLabel(this.names[i]));
+			statusContainers[i].setLayout(new FlowLayout(FlowLayout.LEFT));
+			statusContainers[i].add(shipStatus[i] = new JLabel(this.names[i] + ":"));
 			statusContainers[i].add(hitGraphics[i]);
 			add(statusContainers[i]);
 		}
 
+		/*
 		shotsFired = new JLabel("Shots Fired: " + shots);
 		shotsFired.setAlignmentY(JLabel.LEFT_ALIGNMENT);
-		shotsFired.setHorizontalAlignment(JLabel.LEFT);
+		shotsFired.setHorizontalAlignment(SwingConstants.LEFT);
 		add(whitespace);
-		add(shotsFired);
-		// this.setPreferredSize(new Dimension(200,200));
+		add(shotsFired); */
+		// this.setPreferredSize(new Dimension(200,120));
 	}
 
 	/**
@@ -93,7 +96,7 @@ public class ImprovedStatusPanel extends JPanel implements BattleshipListener {
 
 		shots = 0;
 
-		shotsFired.setText("Shots Fired: " + shots);
+//		shotsFired.setText("Shots Fired: " + shots);
 
 		repaint();
 	}
@@ -110,7 +113,7 @@ public class ImprovedStatusPanel extends JPanel implements BattleshipListener {
 	public void shotFired(BattleshipEvent e) {
 		if (!((e.getEvent() & BattleshipEvent.INVALID) == BattleshipEvent.INVALID)) {
 			shots++;
-			shotsFired.setText("Shots Fired: " + shots);
+//			shotsFired.setText("Shots Fired: " + shots);
 		}
 
 		if (((e.getEvent() & BattleshipEvent.HIT) == BattleshipEvent.HIT)) {
